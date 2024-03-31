@@ -11,7 +11,7 @@ export const CounterWithSettings = () => {
 
     return (
         <div className={style.wrapper}>
-            <Counter value={value} setValue={setValue} />
+            <Counter value={value} setValue={setValue} startValue={startValue} endValue={endValue} />
             <Settings startValue={startValue}
                 setStartValue={setStartValue}
                 endValue={endValue}
