@@ -9,17 +9,14 @@ export const Settings = (props: any) => {
         props.setValue(props.startValue)
     }
 
-    const resetSettings = () => {
-        props.setStartValue(0)
-        props.setEndValue(0)
-    }
-
     const startValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.setStartValue(+e.currentTarget.value)
     }
     const endValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.setEndValue(+e.currentTarget.value)
     }
+
+    const saveDisabled = props.startValue < 0 || props.startValue === props.endValue
 
     return (
         <div className={style.container}>
@@ -36,8 +33,7 @@ export const Settings = (props: any) => {
                     </div>
                 </div>
                 <div className={style.blockButtons}>
-                    <button className={style.button} onClick={saveSettings}>Save</button>
-                    <button className={style.button} onClick={resetSettings}>Reset</button>
+                    <button style={saveDisabled ? { borderColor: 'crimson' } : {}} className={style.button} onClick={saveSettings} disabled={saveDisabled}>Save</button>
                 </div>
             </div>
         </div>

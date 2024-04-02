@@ -6,21 +6,20 @@ export const Counter = (props: any) => {
         props.setValue(props.value + 1)
     }
 
-    const decrement = () => {
-        props.setValue(props.value - 1)
+    const reset = () => {
+        props.setValue(props.startValue)
     }
 
-    const decrementDisabled = props.value === 0
-    const incrementDisabled = props.startValue === 0 || props.endValue === props.value
+    const incorrectValue = props.startValue < 0 || props.startValue === props.endValue
 
     return (
         <div className={style.container}>
             <div className={style.title}>Counter</div>
             <div className={style.content}>
-                <div className={style.counterDisplay}>{props.value}</div>
+                <div style={incorrectValue ? { color: 'crimson' } : {}} className={style.counterDisplay}>{incorrectValue ? 'Incorrect value!' : props.value}</div>
                 <div className={style.blockButtons}>
-                    <button style={incrementDisabled ? { borderColor: 'crimson' } : { borderColor: 'black' }} className={style.button} onClick={increment} disabled={incrementDisabled}>Increment</button>
-                    <button className={style.button} onClick={decrement} disabled={decrementDisabled}>Decrement</button>
+                    <button style={incorrectValue ? { borderColor: 'crimson' } : {}} className={style.button} onClick={increment} disabled={incorrectValue}>Increment</button>
+                    <button style={incorrectValue ? { borderColor: 'crimson' } : {}} className={style.button} onClick={reset}>Reset</button>
                     <button className={style.button}>Settings</button>
                 </div>
             </div>
