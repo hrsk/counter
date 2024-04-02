@@ -13,10 +13,6 @@ type PropsType = {
 export const Settings = (props: PropsType) => {
 
     const saveSettings = () => {
-
-        localStorage.setItem('startValue', props.startValue.toLocaleString())
-        localStorage.setItem('endValue', props.endValue.toLocaleString())
-
         props.setValue(props.startValue)
     }
 

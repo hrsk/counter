@@ -15,16 +15,22 @@ export const Counter = (props: PropsType) => {
         props.setValue(props.startValue)
     }
 
-    const incorrectValue = props.startValue < 0 || props.startValue > props.endValue
+    const incorrectValue = props.startValue < 0 || props.startValue > props.endValue || (props.startValue === props.endValue && props.startValue > 0 && props.endValue > 0)
     const incrementDisabled = props.value === props.endValue || props.startValue === props.endValue
+    const enterValue = props.startValue === 0 && props.endValue === 0
 
     return (
         <div className={style.container}>
             <div className={style.title}>Counter</div>
             <div className={style.content}>
-                <div style={incorrectValue ? { color: 'crimson' } : {}} className={style.counterDisplay}>
+                <div style={incorrectValue || enterValue ? { color: 'crimson' } : {}} className={style.counterDisplay}>
                     {
-                        incorrectValue ? 'Incorrect value!' : props.value
+                        incorrectValue
+                            ? <span>Incorrect value!</span>
+                            : <span>{props.value}</span>
+                                && enterValue
+                                ? <span>Enter values and press 'Save'!</span>
+                                : <span>{props.value}</span>
                     }
                 </div>
                 <div className={style.blockButtons}>

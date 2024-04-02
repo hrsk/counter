@@ -10,16 +10,28 @@ export const CounterWithSettings = () => {
     const [endValue, setEndValue] = useState<number>(0)
 
     useEffect(() => {
-        const startValueFromLocalStorage = localStorage.getItem('startValue')
+        const startValueFromLocalStorage = Number(localStorage.getItem('startValue'))
         const endValueFromLocalStorage = localStorage.getItem('endValue')
 
         setStartValue(Number(startValueFromLocalStorage))
         setEndValue(Number(endValueFromLocalStorage))
 
         setValue(Number(startValueFromLocalStorage))
-        console.log('LS')
 
     }, [])
+
+    useEffect(() => {
+        localStorage.setItem('startValue', startValue.toLocaleString())
+
+    }, [startValue])
+
+    useEffect(() => {
+        localStorage.setItem('endValue', endValue.toLocaleString())
+
+    }, [endValue])
+
+    useEffect(() => {
+    }, [value])
 
     return (
         <div className={style.wrapper}>
