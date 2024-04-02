@@ -1,6 +1,11 @@
 import style from './Counter.module.css'
-
-export const Counter = (props: any) => {
+type PropsType = {
+    value: number
+    setValue: (value: number) => void
+    startValue: number
+    endValue: number
+}
+export const Counter = (props: PropsType) => {
 
     const increment = () => {
         props.setValue(props.value + 1)

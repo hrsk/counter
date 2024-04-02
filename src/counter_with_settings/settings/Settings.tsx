@@ -1,7 +1,16 @@
 import { ChangeEvent } from 'react'
 import style from './Settings.module.css'
 
-export const Settings = (props: any) => {
+type PropsType = {
+    // value: number
+    setValue: (value: number) => void
+    startValue: number
+    setStartValue: (value: number) => void
+    endValue: number
+    setEndValue: (value: number) => void
+}
+
+export const Settings = (props: PropsType) => {
 
     const saveSettings = () => {
         props.setStartValue(props.startValue)
