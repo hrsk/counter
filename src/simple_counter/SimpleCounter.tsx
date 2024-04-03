@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import style from './SimpleCounter.module.css'
-import { useSelector } from 'react-redux'
-import { AppStateType } from '../store/store'
+import { useDispatch, useSelector } from 'react-redux'
 import { decrement, increment } from '../reducers/simpleCounterReducer'
-import { useDispatch } from 'react-redux'
+import { AppStateType } from '../store/store'
+import style from './SimpleCounter.module.css'
 
 export const SimpleCounter = () => {
 
     const counterValue = useSelector<AppStateType, number>((state) => state.simpleCounter.value)
     const dispatch = useDispatch()
 
-    // const [value, setValue] = useState<number>(0)
-
     const incrementHandler = () => {
         dispatch(increment(counterValue + 1))
-        // setValue(value + 1)
     }
 
     const decrementHandler = () => {
         dispatch(decrement(counterValue - 1))
-        // setValue(value - 1)
     }
+
+    const disabled = counterValue === 0
 
     return (
         <div className={style.container}>
-            <div className={style.title}>COUNTER</div>
+            <div className={style.title}>SIMPLE COUNTER</div>
             <div className={style.content}>
                 <div className={style.counterDisplay}>{counterValue}</div>
                 <div className={style.blockButtons}>
                     <button className={style.button} onClick={incrementHandler}>INC</button>
-                    <button className={style.button} onClick={decrementHandler} disabled={counterValue === 0}>DEC</button>
+                    <button style={disabled ? { borderColor: 'crimson' } : {}}
+                        className={style.button}
+                        onClick={decrementHandler}
+                        disabled={disabled}>DEC</button>
                 </div>
             </div>
         </div>
