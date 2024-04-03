@@ -3,47 +3,57 @@ import { Settings } from "./settings/Settings"
 import style from './CounterWithSettings.module.css'
 import { useEffect, useState } from "react"
 
-export const CounterWithSettings = () => {
+type PropsType = {
+    value: number
+    startValue: number
+    endValue: number
+    setValue: (value: number) => void
+    setStartValue: (value: number) => void
+    setEndValue: (value: number) => void
+}
 
-    const [value, setValue] = useState<number>(0)
-    const [startValue, setStartValue] = useState<number>(0)
-    const [endValue, setEndValue] = useState<number>(0)
+export const CounterWithSettings = (props: PropsType) => {
+
+    // const [value, setValue] = useState<number>(0)
+    // const [startValue, setStartValue] = useState<number>(0)
+    // const [endValue, setEndValue] = useState<number>(0)
 
     useEffect(() => {
         const startValueFromLocalStorage = Number(localStorage.getItem('startValue'))
         const endValueFromLocalStorage = localStorage.getItem('endValue')
 
-        setStartValue(Number(startValueFromLocalStorage))
-        setEndValue(Number(endValueFromLocalStorage))
+        props.setStartValue(Number(startValueFromLocalStorage))
+        props.setEndValue(Number(endValueFromLocalStorage))
 
-        setValue(Number(startValueFromLocalStorage))
+        props.setValue(Number(startValueFromLocalStorage))
 
     }, [])
 
     useEffect(() => {
-        localStorage.setItem('startValue', startValue.toLocaleString())
+        localStorage.setItem('startValue', props.startValue.toLocaleString())
 
-    }, [startValue])
-
-    useEffect(() => {
-        localStorage.setItem('endValue', endValue.toLocaleString())
-
-    }, [endValue])
+    }, [props.startValue])
 
     useEffect(() => {
-    }, [value])
+        localStorage.setItem('endValue', props.endValue.toLocaleString())
+
+    }, [props.endValue])
+
+    useEffect(() => {
+    }, [props.value])
 
     return (
         <div className={style.wrapper}>
-            <Counter value={value} setValue={setValue}
-                startValue={startValue}
-                endValue={endValue} />
-            <Settings startValue={startValue}
-                setStartValue={setStartValue}
-                endValue={endValue}
-                setEndValue={setEndValue}
-                value={value}
-                setValue={setValue} />
+            <Counter value={props.value}
+                setValue={props.setValue}
+                startValue={props.startValue}
+                endValue={props.endValue} />
+            <Settings startValue={props.startValue}
+                setStartValue={props.setStartValue}
+                endValue={props.endValue}
+                setEndValue={props.setEndValue}
+                value={props.value}
+                setValue={props.setValue} />
         </div>
     )
 }
