@@ -1,5 +1,8 @@
 import { ChangeEvent } from 'react'
 import style from './Settings.module.css'
+import { useDispatch } from 'react-redux'
+import { setConstantValue } from 'typescript'
+import { setCounterValue } from '../../reducers/settingsReducer'
 
 type PropsType = {
     value: number
@@ -12,8 +15,11 @@ type PropsType = {
 
 export const Settings = (props: PropsType) => {
 
+    const dispatch = useDispatch()
+
     const saveSettings = () => {
-        props.setValue(props.startValue)
+        dispatch(setCounterValue(props.startValue))
+        // props.setValue(props.startValue)
     }
 
     const startValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
