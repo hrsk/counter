@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { combineReducers, createStore } from "redux"
-import { simpleCounterReducer } from "../reducers/simpleCounterReducer"
+import { simpleCounterReducer } from "../reducers/simple-counter-reducer"
 import { settingsReducer } from "../reducers/settingsReducer"
 
 const rootReducer = combineReducers({

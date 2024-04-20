@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { decrement, increment } from '../reducers/simpleCounterReducer'
 import { AppStateType } from '../store/store'
 import style from './SimpleCounter.module.css'
+import { setCounterValue } from '../reducers/simple-counter-reducer'
 
 export const SimpleCounter = () => {
 
@@ -9,11 +9,11 @@ export const SimpleCounter = () => {
     const dispatch = useDispatch()
 
     const incrementHandler = () => {
-        dispatch(increment(counterValue + 1))
+        dispatch(setCounterValue(counterValue + 1))
     }
 
     const decrementHandler = () => {
-        dispatch(decrement(counterValue - 1))
+        dispatch(setCounterValue(counterValue - 1))
     }
 
     const disabled = counterValue === 0
