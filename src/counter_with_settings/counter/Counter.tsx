@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { setCounterValue } from '../../reducers/simple-counter-reducer'
+import { setCounterValue } from '../../reducers/counter-with-settings-reducer'
 import style from './Counter.module.css'
 
 type PropsType = {
