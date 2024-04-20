@@ -1,41 +1,52 @@
+import { useDispatch } from 'react-redux'
+import { setCounterValue } from '../../reducers/simple-counter-reducer'
 import style from './Counter.module.css'
+
 type PropsType = {
-    value: number
-    setValue: (value: number) => void
+    counterValue: number
     startValue: number
-    endValue: number
+    maxValue: number
 }
 export const Counter = (props: PropsType) => {
 
+    const dispatch = useDispatch()
+
     const increment = () => {
-        props.setValue(props.value + 1)
+        dispatch(setCounterValue(props.counterValue + 1))
     }
 
     const reset = () => {
-        props.setValue(props.startValue)
+        dispatch(setCounterValue(props.startValue))
     }
 
-    const incorrectValue = props.startValue < 0 || props.startValue > props.endValue || (props.startValue === props.endValue && props.startValue > 0 && props.endValue > 0)
-    const incrementDisabled = props.value === props.endValue || props.startValue === props.endValue
-    const enterValue = props.startValue === 0 && props.endValue === 0
+    const incorrectValue = props.startValue < 0 || props.startValue > props.maxValue || (props.startValue === props.maxValue && props.startValue > 0 && props.maxValue > 0)
+    const incrementDisabled = props.counterValue === props.maxValue || props.startValue === props.maxValue
+    const enterValue = props.startValue === 0 && props.maxValue === 0
 
     return (
         <div className={style.container}>
             <div className={style.title}>Counter</div>
             <div className={style.content}>
-                <div style={incorrectValue || enterValue ? { color: 'crimson' } : {}} className={style.counterDisplay}>
+                <div style={incorrectValue || enterValue ? { color: 'crimson' } : {}}
+                    className={style.counterDisplay}>
                     {
                         incorrectValue
                             ? <span>Incorrect value!</span>
-                            : <span>{props.value}</span>
+                            : <span>{props.counterValue}</span>
                                 && enterValue
                                 ? <span>Enter values and press 'Save'!</span>
-                                : <span>{props.value}</span>
+                                : <span>{props.counterValue}</span>
                     }
                 </div>
                 <div className={style.blockButtons}>
-                    <button style={incrementDisabled || incorrectValue ? { borderColor: 'crimson' } : {}} className={style.button} onClick={increment} disabled={incorrectValue || incrementDisabled}>Increment</button>
-                    <button style={incorrectValue || props.startValue === props.endValue ? { borderColor: 'crimson' } : {}} className={style.button} onClick={reset} disabled={incorrectValue}>Reset</button>
+                    <button style={incrementDisabled || incorrectValue ? { borderColor: 'crimson' } : {}}
+                        className={style.button}
+                        onClick={increment}
+                        disabled={incorrectValue || incrementDisabled}>Increment</button>
+                    <button style={incorrectValue || props.startValue === props.maxValue ? { borderColor: 'crimson' } : {}}
+                        className={style.button}
+                        onClick={reset}
+                        disabled={incorrectValue}>Reset</button>
                     <button className={style.button}>Settings</button>
                 </div>
             </div>
