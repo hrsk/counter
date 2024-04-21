@@ -4,6 +4,7 @@ import { setCounterValue, setMaxValue, setStartValue } from "../reducers/counter
 import style from './CounterWithSettings.module.css'
 import { Counter } from "./counter/Counter"
 import { Settings } from "./settings/Settings"
+import { setCounterError } from "../reducers/counter-errors-reducer"
 
 type PropsType = {
     counterValue: number
@@ -16,23 +17,39 @@ export const CounterWithSettings = (props: PropsType) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        localStorage.setItem('startValue', props.startValue.toLocaleString())
+        if (props.startValue)
+            localStorage.setItem('startValue', props.startValue.toLocaleString())
     }, [props.startValue])
 
     useEffect(() => {
-        localStorage.setItem('maxValue', props.maxValue.toLocaleString())
+        if (props.maxValue)
+            localStorage.setItem('maxValue', props.maxValue.toLocaleString())
     }, [props.maxValue])
 
     useEffect(() => {
-        const startValueFromLocalStorage = Number(localStorage.getItem('startValue'))
-        const endValueFromLocalStorage = localStorage.getItem('maxValue')
+        const startValueFromLocalStorage = localStorage.getItem('startValue')
+        const maxValueFromLocalStorage = localStorage.getItem('maxValue')
 
         dispatch(setStartValue(Number(startValueFromLocalStorage)))
-        dispatch(setMaxValue(Number(endValueFromLocalStorage)))
+        dispatch(setMaxValue(Number(maxValueFromLocalStorage)))
 
         dispatch(setCounterValue(Number(startValueFromLocalStorage)))
 
     }, [dispatch])
+
+
+    useEffect(() => {
+        // if (props.startValue && props.maxValue)
+        //     if (props.startValue < 0 || props.startValue > props.maxValue || (props.startValue === props.maxValue)) {
+        //         dispatch(setCounterError(['Input values is incorrect']));
+        //     }
+        if (props.startValue === 0 && props.maxValue === 0) {
+            dispatch(setCounterError([`Enter values and press 'Save'!`]));
+        }
+        if (props.maxValue > props.startValue) {
+            dispatch(setCounterError([]));
+        }
+    }, [props.startValue, props.maxValue, props.counterValue]);
 
     console.log(props.counterValue)
 

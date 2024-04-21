@@ -2,10 +2,12 @@ import { useDispatch } from "react-redux"
 import { combineReducers, createStore } from "redux"
 import { simpleCounterReducer } from "../reducers/simple-counter-reducer"
 import { counterWithSettingsReducer } from "../reducers/counter-with-settings-reducer"
+import { counterErrorsReducer } from "../reducers/counter-errors-reducer"
 
 const rootReducer = combineReducers({
     simpleCounter: simpleCounterReducer,
     counterWithSettings: counterWithSettingsReducer,
+    counterErrors: counterErrorsReducer,
 })
 
 export const store = createStore(rootReducer)

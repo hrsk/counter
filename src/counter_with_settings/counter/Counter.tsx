@@ -1,6 +1,8 @@
 import { useDispatch } from 'react-redux'
 import { setCounterValue } from '../../reducers/counter-with-settings-reducer'
 import style from './Counter.module.css'
+import { useSelector } from 'react-redux'
+import { AppStateType } from '../../store/store'
 
 type PropsType = {
     counterValue: number
@@ -10,9 +12,12 @@ type PropsType = {
 export const Counter = (props: PropsType) => {
 
     const dispatch = useDispatch()
+    const error = useSelector<AppStateType, string>(state => state.counterErrors.errors[0])
 
     const increment = () => {
-        dispatch(setCounterValue(props.counterValue + 1))
+        if (props.counterValue) {
+            dispatch(setCounterValue(props.counterValue + 1))
+        }
     }
 
     const reset = () => {
@@ -30,13 +35,20 @@ export const Counter = (props: PropsType) => {
                 <div style={incorrectValue || enterValue ? { color: 'crimson' } : {}}
                     className={style.counterDisplay}>
                     {
+                        error
+                            ? <span>{error}</span>
+                            : <span>{props.counterValue}</span>
+                                && error ? <span>{error}</span>
+                                : <span>{props.counterValue}</span>
+                    }
+                    {/* {
                         incorrectValue
                             ? <span>Incorrect value!</span>
                             : <span>{props.counterValue}</span>
                                 && enterValue
                                 ? <span>Enter values and press 'Save'!</span>
                                 : <span>{props.counterValue}</span>
-                    }
+                    } */}
                 </div>
                 <div className={style.blockButtons}>
                     <button style={incrementDisabled || incorrectValue ? { borderColor: 'crimson' } : {}}
