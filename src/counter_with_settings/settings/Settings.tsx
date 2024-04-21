@@ -4,7 +4,7 @@ import { setCounterValue, setMaxValue, setStartValue } from '../../reducers/coun
 import style from './Settings.module.css'
 
 type PropsType = {
-    counterValue: number
+    counterValue: number | undefined
     // setValue: (value: number) => void
     startValue: number
     // setStartValue: (value: number) => void
@@ -16,9 +16,10 @@ export const Settings = (props: PropsType) => {
 
     const dispatch = useDispatch()
 
-    const saveSettings = () => {
+    const saveSettingsToLocalStorage = () => {
         dispatch(setCounterValue(props.startValue))
-        // props.setValue(props.startValue)
+        localStorage.setItem('startValue', JSON.stringify(props.startValue))
+        localStorage.setItem('maxValue', JSON.stringify(props.maxValue))
     }
 
     const startValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +29,9 @@ export const Settings = (props: PropsType) => {
         dispatch(setMaxValue(+e.currentTarget.value))
     }
 
-    const saveDisabled = props.startValue < 0 || props.startValue >= props.maxValue
-    const incorrectValue = props.startValue < 0 || props.startValue > props.maxValue
+    const saveDisabled = props.maxValue <= props.startValue || props.startValue < 0 || props.maxValue < 0
+    // const incorrectValue = props.startValue < 0 || props.startValue > props.maxValue
+    const incorrectValue = false
 
     return (
         <div className={style.container}>
@@ -46,7 +48,7 @@ export const Settings = (props: PropsType) => {
                     </div>
                 </div>
                 <div className={style.blockButtons}>
-                    <button style={saveDisabled ? { borderColor: 'crimson' } : {}} className={style.button} onClick={saveSettings} disabled={saveDisabled}>Save</button>
+                    <button style={saveDisabled ? { borderColor: 'crimson' } : {}} className={style.button} onClick={saveSettingsToLocalStorage} disabled={saveDisabled}>Save</button>
                 </div>
             </div>
         </div>

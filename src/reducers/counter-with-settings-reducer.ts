@@ -1,11 +1,11 @@
 export type InitialStateType = {
-    counterValue: number
+    counterValue: number | undefined
     startValue: number
     maxValue: number
 }
 
 const initialState = {
-    counterValue: 0,
+    counterValue: undefined,
     startValue: 0,
     maxValue: 0,
 }
@@ -18,6 +18,7 @@ export const counterWithSettingsReducer = (state = initialState, action: withSet
             return { ...state, startValue: action.startValue }
         case 'SET_MAX_VALUE':
             return { ...state, maxValue: action.maxValue }
+
         default: return state
     }
 }
@@ -29,7 +30,7 @@ type SetCounterValueActionType = ReturnType<typeof setCounterValue>
 type SetStartValueActionType = ReturnType<typeof setStartValue>
 type SetMaxValueActionType = ReturnType<typeof setMaxValue>
 
-export const setCounterValue = (counterValue: number) => {
+export const setCounterValue = (counterValue: number | undefined) => {
     return {
         type: 'SET_COUNTER_VALUE',
         counterValue
