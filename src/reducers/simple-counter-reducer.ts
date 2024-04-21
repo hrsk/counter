@@ -3,7 +3,7 @@ const initialState = {
     value: 0
 }
 
-type InitialStateType = {
+export type InitialStateType = {
     value: number
 }
 

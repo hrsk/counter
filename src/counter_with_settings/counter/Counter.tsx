@@ -3,6 +3,7 @@ import { setCounterValue } from '../../reducers/counter-with-settings-reducer'
 import style from './Counter.module.css'
 import { useSelector } from 'react-redux'
 import { AppStateType } from '../../store/store'
+import { useNavigate } from 'react-router-dom'
 
 type PropsType = {
     counterValue: number | undefined
@@ -13,6 +14,8 @@ export const Counter = (props: PropsType) => {
 
     const dispatch = useDispatch()
     const error = useSelector<AppStateType, string>(state => state.counterErrors.errors[0])
+    const navigate = useNavigate();
+
 
     const increment = () => {
         if (props.counterValue !== undefined) {
@@ -24,13 +27,16 @@ export const Counter = (props: PropsType) => {
         dispatch(setCounterValue(props.startValue))
     }
 
-    // const incorrectValue = props.startValue < 0 || props.startValue > props.maxValue || (props.startValue === props.maxValue && props.startValue > 0 && props.maxValue > 0)
-    // const incrementDisabled = props.counterValue === props.maxValue || props.startValue === props.maxValue
-    // const enterValue = props.startValue === 0 && props.maxValue === 0
-    const incorrectValue = false
+    const onClickSettingsHandler = () => {
+        dispatch(setCounterValue(0));
+        navigate('/settings')
+    }
+
+    const incorrectValue = props.maxValue < props.startValue || props.startValue < 0 || props.maxValue < 0 || props.startValue === props.maxValue
     const incrementDisabled = props.counterValue === props.maxValue || props.startValue < 0 || props.startValue >= props.maxValue || !!error
-    const enterValidValues = false
     const resetDisabled = (props.counterValue !== undefined && props.counterValue < props.maxValue) || !!error
+
+    const counterValueIsMax = props.counterValue === props.maxValue
 
     return (
         <div className={style.container}>
@@ -41,16 +47,8 @@ export const Counter = (props: PropsType) => {
                     {
                         error
                             ? <span>{error}</span>
-                            : <span>{props.counterValue}</span>
+                            : <span style={counterValueIsMax ? { color: 'crimson', fontWeight: 'bold' } : {} && { fontWeight: 'bold' }} >{props.counterValue}</span>
                     }
-                    {/* {
-                        incorrectValue
-                            ? <span>Incorrect value!</span>
-                            : <span>{props.counterValue}</span>
-                                && enterValue
-                                ? <span>Enter values and press 'Save'!</span>
-                                : <span>{props.counterValue}</span>
-                    } */}
                 </div>
                 <div className={style.blockButtons}>
                     <button style={incrementDisabled || incorrectValue ? { borderColor: 'crimson' } : {}}
@@ -61,7 +59,7 @@ export const Counter = (props: PropsType) => {
                         className={style.button}
                         onClick={reset}
                         disabled={resetDisabled}>Reset</button>
-                    <button className={style.button}>Settings</button>
+                    <button className={style.button} onClick={onClickSettingsHandler}>Settings</button>
                 </div>
             </div>
         </div>

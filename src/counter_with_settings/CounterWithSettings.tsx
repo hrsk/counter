@@ -1,17 +1,21 @@
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { InitialStateType, setCounterValue, setMaxValue, setStartValue } from "../reducers/counter-with-settings-reducer"
-import { AppStateType } from "../store/store"
+import { useDispatch } from "react-redux"
+import { setCounterError } from "../reducers/counter-errors-reducer"
+import { setMaxValue, setStartValue } from "../reducers/counter-with-settings-reducer"
 import style from './CounterWithSettings.module.css'
 import { Counter } from "./counter/Counter"
 import { Settings } from "./settings/Settings"
-import { setCounterError } from "../reducers/counter-errors-reducer"
 
+type PropsType = {
+    counterValue: number | undefined
+    startValue: number
+    maxValue: number
+}
 
-export const CounterWithSettings = () => {
+export const CounterWithSettings = (props: PropsType) => {
 
     const dispatch = useDispatch()
-    const values = useSelector<AppStateType, InitialStateType>(state => state.counterWithSettings)
+    // const values = useSelector<AppStateType, InitialStateType>(state => state.counterWithSettings)
 
     // useEffect on first load page: check localstorage on presence of values and set
 
@@ -19,14 +23,14 @@ export const CounterWithSettings = () => {
         const valueAsString = localStorage.getItem("maxValue");
         if (valueAsString) {
             return JSON.parse(valueAsString)
-        } else return values.maxValue
+        } else return props.maxValue
     }
 
     const startValueFromLocalStorage = () => {
         const valueAsString = localStorage.getItem("startValue");
         if (valueAsString) {
             return JSON.parse(valueAsString)
-        } else return values.startValue
+        } else return props.startValue
     }
 
     useEffect(() => {
@@ -38,25 +42,25 @@ export const CounterWithSettings = () => {
     // useEffect errors 
 
     useEffect(() => {
-        if (values.counterValue === undefined) {
+        if (props.counterValue === undefined) {
             dispatch(setCounterError([`Enter values and press 'Save'!`]));
         }
-        if (values.counterValue === undefined && values.startValue >= values.maxValue) {
-            dispatch(setCounterError(['Input values is incorrect']));
+        if (props.maxValue < props.startValue || props.startValue < 0 || props.maxValue < 0 || props.startValue === props.maxValue) {
+            dispatch(setCounterError(['Input values is incorrect!']))
         }
-        if (values.counterValue === values.startValue) {
+        if (props.counterValue === props.startValue) {
             dispatch(setCounterError([]));
         }
-    }, [values.startValue, values.maxValue, values.counterValue]);
+    }, [props.startValue, props.maxValue, props.counterValue]);
 
     return (
         <div className={style.wrapper}>
-            <Counter counterValue={values.counterValue}
-                startValue={values.startValue}
-                maxValue={values.maxValue} />
-            <Settings startValue={values.startValue}
-                maxValue={values.maxValue}
-                counterValue={values.counterValue}
+            <Counter counterValue={props.counterValue}
+                startValue={props.startValue}
+                maxValue={props.maxValue} />
+            <Settings startValue={props.startValue}
+                maxValue={props.maxValue}
+                counterValue={props.counterValue}
             />
         </div>
     )

@@ -86,13 +86,17 @@
     text-align: center;
 
     font: Inter;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 20px;
+    line-height: 14px;
 
     color: #4E71FE;
 
     border: 2px solid #4E71FE;
     background-color: #FFFFFF;
     box-shadow: 0px 4px 20px 5px #00000018
+}
+
+.button:hover {
+    cursor: pointer;
 }
