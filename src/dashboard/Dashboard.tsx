@@ -1,5 +1,6 @@
 import { NavLink as BaseNavLink } from "react-router-dom";
 import styled from "styled-components";
+import sprite from '../assets/images/sprite.svg'
 
 export const Dashboard = () => {
     return (
@@ -9,6 +10,16 @@ export const Dashboard = () => {
                 <NavLink to={'/counter-with-settings'}>counter with settings</NavLink>
                 <NavLink to={'/simple-counter'}>simple counter</NavLink>
             </LinksWrapper>
+            <SocialMediaWrapper>
+                <Text>
+                    GitHub:
+                </Text>
+                <SocialMediaItemLink to={'https://github.com/hrsk/counter'}>
+                    <SocialMediaItemIcon width={'24px'} height={'24px'} viewBox={'0 0 24 24'}>
+                        <use xlinkHref={`${sprite}#${'github'}`} />
+                    </SocialMediaItemIcon>
+                </SocialMediaItemLink>
+            </SocialMediaWrapper>
         </Wrapper>
     );
 };
@@ -33,8 +44,7 @@ const Title = styled.h3<{ $textColor?: string }>`
     align-items: center;
     justify-content: center;
 
-    border-radius: 10px;
-    margin-bottom: 20px;
+    border-radius: 34px;
     background: linear-gradient(89.94deg, #51b9ff 0%, #7785ff 52.6%, #b279ff 73.96%, #ff81ed 100%);
 
     font: Inter;
@@ -114,4 +124,26 @@ const LinksWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+`
+
+const Text = styled.span<{ $textColor?: string, $fontSize?: string }>`
+color: ${props => props.$textColor || '#7785ff'};
+font-size: ${props => props.$fontSize || '16px'};
+`
+
+const SocialMediaItemIcon = styled.svg<{
+    viewBox?: string, width?: string, height?: string
+}>`
+`
+const SocialMediaItemLink = styled(BaseNavLink)`
+    ${SocialMediaItemIcon}:hover {
+        transform: scale(1.5);
+    }
+`
+const SocialMediaWrapper = styled.div`
+    display: flex;
+    position: absolute;
+    align-items: center;
+    bottom: 10px;
+    gap: 10px;
 `

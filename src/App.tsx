@@ -1,12 +1,12 @@
+import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { CounterWithSettings } from './counter_with_settings/CounterWithSettings';
-import { Dashboard } from './dashboard/Dashboard';
-import { SimpleCounter } from './simple_counter/SimpleCounter';
 import { Settings } from './counter_with_settings/settings/Settings';
-import { useSelector } from 'react-redux';
-import { AppStateType } from './store/store';
+import { Dashboard } from './dashboard/Dashboard';
 import { InitialStateType } from './reducers/counter-with-settings-reducer';
+import { SimpleCounter } from './simple_counter/SimpleCounter';
+import { AppStateType } from './store/store';
 
 export const App = () => {
 

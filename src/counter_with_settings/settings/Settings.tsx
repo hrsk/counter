@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { NavLink as BaseNavLink, useNavigate } from 'react-router-dom'
 import { setCounterValue, setMaxValue, setStartValue } from '../../reducers/counter-with-settings-reducer'
 import { styled } from 'styled-components'
-import sprite from '../../assets/images/sprite.svg'
 
 type PropsType = {
     counterValue: number | undefined
@@ -53,16 +52,6 @@ export const Settings = (props: PropsType) => {
                     <NavLink to={'/'}>Dashboard</NavLink>
                 </Button>
             </ButtonsWrapper>
-            <SocialMediaWrapper>
-                <Text>
-                    GitHub:
-                </Text>
-                <SocialMediaItemLink to={'https://github.com/hrsk/counter'}>
-                    <SocialMediaItemIcon width={'24px'} height={'24px'} viewBox={'0 0 24 24'}>
-                        <use xlinkHref={`${sprite}#${'github'}`} />
-                    </SocialMediaItemIcon>
-                </SocialMediaItemLink>
-            </SocialMediaWrapper>
         </Wrapper>
     )
 }
@@ -197,20 +186,4 @@ const NavLink = styled(BaseNavLink) <{ $textColor?: string }>`
 const Input = styled.input<{ $borderColor?: string }>`
     border-color:  ${props => props.$borderColor};
     height: 16px;
-`
-
-const SocialMediaItemIcon = styled.svg<{
-    viewBox?: string, width?: string, height?: string
-}>`
-`
-const SocialMediaItemLink = styled(BaseNavLink)`
-    ${SocialMediaItemIcon}:hover {
-        transform: scale(1.5);
-    }
-`
-const SocialMediaWrapper = styled.div`
-    display: flex;
-    align-content:  center;
-    gap: 10px;
-    align-items: center;
 `
