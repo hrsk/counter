@@ -1,30 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { setCounterValue } from '../reducers/counter-with-settings-reducer'
+import { InitialStateType, setCounterValue } from '../reducers/counter-with-settings-reducer'
 import { AppStateType } from '../store/store'
+import { useEffect } from 'react'
 
-type PropsType = {
-    counterValue: number | undefined
-    startValue: number
-    maxValue: number
-}
-
-export const CounterWithSettings = (props: PropsType) => {
+export const CounterWithSettings = () => {
 
     const dispatch = useDispatch()
-    const error = useSelector<AppStateType, string>(state => state.counterErrors.errors[0])
     const navigate = useNavigate();
+    const values = useSelector<AppStateType, InitialStateType>(state => state.counterWithSettings)
+    const error = useSelector<AppStateType, string>(state => state.counterErrors.errors[0])
 
+    useEffect(() => {
+        dispatch(setCounterValue(values.startValue))
+    }, [values.startValue])
 
     const increment = () => {
-        if (props.counterValue !== undefined) {
-            dispatch(setCounterValue(props.counterValue + 1))
+        if (values.counterValue !== undefined) {
+            dispatch(setCounterValue(values.counterValue + 1))
         }
     }
 
     const reset = () => {
-        dispatch(setCounterValue(props.startValue))
+        dispatch(setCounterValue(values.startValue))
     }
 
     const onClickSettingsHandler = () => {
@@ -32,11 +31,11 @@ export const CounterWithSettings = (props: PropsType) => {
         navigate('/settings')
     }
 
-    const incorrectValue = props.maxValue < props.startValue || props.startValue < 0 || props.maxValue < 0 || props.startValue === props.maxValue
-    const incrementDisabled = props.counterValue === props.maxValue || props.startValue < 0 || props.startValue >= props.maxValue || !!error
-    const resetDisabled = (props.counterValue !== undefined && props.counterValue < props.maxValue) || !!error
+    const incorrectValue = values.maxValue < values.startValue || values.startValue < 0 || values.maxValue < 0 || values.startValue === values.maxValue
+    const incrementDisabled = values.counterValue === undefined || values.counterValue === values.maxValue || values.startValue < 0 || values.startValue >= values.maxValue || !!error
+    const resetDisabled = (values.counterValue !== undefined && values.counterValue < values.maxValue && values.counterValue <= values.startValue) || !!error
 
-    const counterValueIsMax = props.counterValue === props.maxValue
+    const counterValueIsMax = values.counterValue === values.maxValue
 
     return (
         <Wrapper>
@@ -45,7 +44,7 @@ export const CounterWithSettings = (props: PropsType) => {
                 {
                     error
                         ? <Text $textColor={error ? 'crimson' : ''}>{error}</Text>
-                        : <Text $textColor={counterValueIsMax ? '#543fbe ' : ''} $fontSize={counterValueIsMax ? '48px' : ''}>{props.counterValue}</Text>
+                        : <Text $textColor={counterValueIsMax ? '#543fbe ' : ''} $fontSize={counterValueIsMax ? '48px' : ''}>{values.counterValue}</Text>
                 }
             </DisplayCounterValue>
             <ButtonsWrapper>

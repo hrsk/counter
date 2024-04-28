@@ -1,26 +1,25 @@
 import { ChangeEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink as BaseNavLink, useNavigate } from 'react-router-dom'
-import { setCounterValue, setMaxValue, setStartValue } from '../../reducers/counter-with-settings-reducer'
+import { InitialStateType, setCounterValue, setMaxValue, setStartValue } from '../../reducers/counter-with-settings-reducer'
 import { styled } from 'styled-components'
+import { useSelector } from 'react-redux'
+import { AppStateType } from '../../store/store'
 
-type PropsType = {
-    counterValue: number | undefined
-    startValue: number
-    maxValue: number
-}
-
-export const Settings = (props: PropsType) => {
+export const Settings = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const values = useSelector<AppStateType, InitialStateType>(state => state.counterWithSettings)
+    const error = useSelector<AppStateType, string>(state => state.counterErrors.errors[0])
 
     const saveSettingsToLocalStorage = () => {
-        dispatch(setCounterValue(props.startValue))
-        localStorage.setItem('startValue', JSON.stringify(props.startValue))
-        localStorage.setItem('maxValue', JSON.stringify(props.maxValue))
+        dispatch(setCounterValue(values.startValue))
+        localStorage.setItem('startValue', JSON.stringify(values.startValue))
+        localStorage.setItem('maxValue', JSON.stringify(values.maxValue))
 
-        if (props.startValue) {
+
+        if (values.startValue !== undefined) {
             navigate("/counter-with-settings");
         }
     }
@@ -32,8 +31,8 @@ export const Settings = (props: PropsType) => {
         dispatch(setMaxValue(+e.currentTarget.value))
     }
 
-    const saveDisabled = props.maxValue <= props.startValue || props.startValue < 0 || props.maxValue <= 0
-    const incorrectValue = props.maxValue < props.startValue || props.startValue < 0 || props.maxValue < 0 || props.startValue === props.maxValue
+    const saveDisabled = values.maxValue <= values.startValue || values.startValue < 0 || values.maxValue <= 0
+    const incorrectValue = values.maxValue < values.startValue || values.startValue < 0 || values.maxValue < 0 || (values.startValue === values.maxValue && values.startValue !== 0 && values.maxValue !== 0)
 
     return (
         <Wrapper>
@@ -41,10 +40,11 @@ export const Settings = (props: PropsType) => {
             <InputValuesBlock>
                 <Inputs>
                     <Text $textColor={incorrectValue ? 'crimson' : ''}>start value:</Text>
-                    <Input $borderColor={incorrectValue ? 'crimson' : ''} type='number' value={props.startValue} onChange={startValueHandler} />
+                    <Input $borderColor={incorrectValue ? 'crimson' : ''} type='number' value={values.startValue} onChange={startValueHandler} />
                     <Text $textColor={incorrectValue ? 'crimson' : ''}>max value:</Text>
-                    <Input $borderColor={incorrectValue ? 'crimson' : ''} type='number' value={props.maxValue} onChange={endValueHandler} />
+                    <Input $borderColor={incorrectValue ? 'crimson' : ''} type='number' value={values.maxValue} onChange={endValueHandler} />
                 </Inputs>
+                <Text $textColor={error ? 'crimson' : ''} $fontSize={error ? '14px' : ''}>{error && error}</Text>
             </InputValuesBlock>
             <ButtonsWrapper>
                 <Button onClick={saveSettingsToLocalStorage} disabled={saveDisabled}>Save</Button>
@@ -152,6 +152,7 @@ const Button = styled.button<{ $textColor?: string }>`
 const Text = styled.span<{ $textColor?: string, $fontSize?: string }>`
 color: ${props => props.$textColor || '#7785ff'};
 font-size: ${props => props.$fontSize || '16px'};
+text-align: center;
 `
 const NavLink = styled(BaseNavLink) <{ $textColor?: string }>`
     position: relative;

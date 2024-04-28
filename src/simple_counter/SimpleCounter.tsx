@@ -1,36 +1,39 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setCounterValue } from '../reducers/simple-counter-reducer'
+import { setSimpleValue } from '../reducers/simple-counter-reducer'
 import { styled } from 'styled-components'
+import { useEffect } from 'react'
+import { AppStateType } from '../store/store'
 
-type PropsType = {
-    counterValue: number
-}
+export const SimpleCounter = () => {
 
-export const SimpleCounter = (props: PropsType) => {
+    useEffect(() => {
+        dispatch(setSimpleValue(0))
+    }, [])
 
+    const counterValue = useSelector<AppStateType, number>((state) => state.simpleCounter.value)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const incrementHandler = () => {
-        dispatch(setCounterValue(props.counterValue + 1))
-        if (props.counterValue >= 10) {
-            dispatch(setCounterValue(0))
+        dispatch(setSimpleValue(counterValue + 1))
+        if (counterValue >= 10) {
+            dispatch(setSimpleValue(0))
             return navigate('/')
         }
     }
 
     const decrementHandler = () => {
-        dispatch(setCounterValue(props.counterValue - 1))
+        dispatch(setSimpleValue(counterValue - 1))
     }
 
-    const disabled = props.counterValue === 0
+    const disabled = counterValue === 0
 
     return (
         <Wrapper>
             <Title>Simple Counter</Title>
             <DisplayCounterValue>
-                <Text>{props.counterValue}</Text>
+                <Text>{counterValue}</Text>
             </DisplayCounterValue>
             <ButtonsWrapper>
                 <Button onClick={incrementHandler}>INC</Button>

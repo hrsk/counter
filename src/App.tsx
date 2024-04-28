@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -7,22 +8,13 @@ import { Dashboard } from './dashboard/Dashboard';
 import { InitialStateType, setMaxValue, setStartValue } from './reducers/counter-with-settings-reducer';
 import { SimpleCounter } from './simple_counter/SimpleCounter';
 import { AppStateType } from './store/store';
-import { useEffect } from 'react';
 import { setCounterError } from './reducers/counter-errors-reducer';
-import { setCounterValue } from './reducers/simple-counter-reducer';
 
 export const App = () => {
 
-  const values = useSelector<AppStateType, InitialStateType>(state => state.counterWithSettings)
-  const counterValue = useSelector<AppStateType, number>((state) => state.simpleCounter.value)
-
   const dispatch = useDispatch()
+  const values = useSelector<AppStateType, InitialStateType>(state => state.counterWithSettings)
 
-  // useEffect on first load page: check localstorage on presence of values and set
-
-  useEffect(() => {
-    dispatch(setCounterValue(0))
-  }, [])
 
   const maxValueFromLocalStorage = () => {
     const valueAsString = localStorage.getItem("maxValue");
@@ -46,17 +38,16 @@ export const App = () => {
   // useEffect errors 
 
   useEffect(() => {
-    if (values.counterValue === undefined) {
+    if (values.counterValue === undefined && values.startValue === 0 && values.maxValue === 0) {
       dispatch(setCounterError([`Enter values and press 'Save'!`]));
     }
-    if (values.maxValue < values.startValue || values.startValue < 0 || values.maxValue < 0 || values.startValue === values.maxValue) {
+    if (values.maxValue < values.startValue || values.startValue < 0 || values.maxValue < 0 || (values.startValue === values.maxValue && values.startValue !== 0 && values.maxValue !== 0)) {
       dispatch(setCounterError(['Input values is incorrect!']))
     }
-    if (values.counterValue === values.startValue) {
+    if (values.counterValue === values.startValue || values.startValue < values.maxValue) {
       dispatch(setCounterError([]));
     }
-  }, [values.startValue, values.maxValue, values.counterValue]);
-
+  }, [values.startValue, values.maxValue]);
 
   return (
     <div className="App">
@@ -65,20 +56,15 @@ export const App = () => {
           <Dashboard />} />
         <Route
           path="simple-counter"
-          element={<SimpleCounter counterValue={counterValue} />}
+          element={<SimpleCounter />}
         >
         </Route>
         <Route path={"settings"} element={
-          <Settings counterValue={values.counterValue}
-            startValue={values.startValue}
-            maxValue={values.maxValue} />
+          <Settings />
         }>
         </Route>
         <Route path="counter-with-settings" element={
-          <CounterWithSettings counterValue={values.counterValue}
-            startValue={values.startValue}
-            maxValue={values.maxValue}
-          />
+          <CounterWithSettings />
         }>
         </Route>
       </Routes>

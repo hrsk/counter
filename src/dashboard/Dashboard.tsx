@@ -1,6 +1,6 @@
 import { NavLink as BaseNavLink } from "react-router-dom";
 import styled from "styled-components";
-import sprite from '../assets/images/sprite.svg'
+import sprite from '../assets/images/sprite.svg';
 
 export const Dashboard = () => {
     return (

@@ -15,9 +15,9 @@ export const simpleCounterReducer = (state = initialState, action: SetCounterVal
     }
 }
 
-type SetCounterValueActionType = ReturnType<typeof setCounterValue>
+type SetCounterValueActionType = ReturnType<typeof setSimpleValue>
 
-export const setCounterValue = (value: number) => {
+export const setSimpleValue = (value: number) => {
     return {
         type: 'SET_COUNTER_VALUE',
         value,
