@@ -33,7 +33,7 @@ export const CounterWithSettings = () => {
 
     const incorrectValue = values.maxValue < values.startValue || values.startValue < 0 || values.maxValue < 0 || values.startValue === values.maxValue
     const incrementDisabled = values.counterValue === undefined || values.counterValue === values.maxValue || values.startValue < 0 || values.startValue >= values.maxValue || !!error
-    const resetDisabled = (values.counterValue !== undefined && values.counterValue < values.maxValue && values.counterValue <= values.startValue) || !!error
+    const resetDisabled = (values.counterValue !== undefined && values.counterValue <= values.startValue) || (values.counterValue !== undefined && values.counterValue < values.maxValue)
 
     const counterValueIsMax = values.counterValue === values.maxValue
 
